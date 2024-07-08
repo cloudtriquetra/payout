@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"strings"
 	"time"
 )
@@ -12,7 +13,7 @@ func GetDuration(startDateTime time.Time, endDateTime time.Time) time.Duration {
 
 }
 
-func GetTimeStamp(date string, eventTime string) time.Time {
+func GetTimeStamp(date string, eventTime string) (time.Time, error) {
 	const dateTimeFormat = "2-01-2006 15:04"
 	tz, _ := time.LoadLocation("Europe/Warsaw")
 	var timeStampString strings.Builder
@@ -20,7 +21,10 @@ func GetTimeStamp(date string, eventTime string) time.Time {
 	timeStampString.WriteString(date)
 	timeStampString.WriteString(" ")
 	timeStampString.WriteString(eventTime)
-	timeStamp, _ := time.Parse(dateTimeFormat, timeStampString.String())
-	return timeStamp.In(tz)
+	timeStamp, err := time.ParseInLocation(dateTimeFormat, timeStampString.String(), tz)
+	if err != nil {
+		return timeStamp, errors.New("invalid date or time format entered")
+	}
+	return timeStamp, nil
 
 }
