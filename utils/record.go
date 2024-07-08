@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -17,14 +18,17 @@ type EffortEntry struct {
 	CreatedBy      string
 }
 
-func NewEffortEntry(empName string, startTimeStamp time.Time, endTimeStamp time.Time, duration time.Duration) EffortEntry {
-	return EffortEntry{
+func NewEffortEntry(empName string, startTimeStamp time.Time, endTimeStamp time.Time, duration time.Duration) (*EffortEntry, error) {
+	if empName == "" {
+		return nil, errors.New("employee Name is required")
+	}
+	return &EffortEntry{
 		EmployeeName:   empName,
 		StartTimeStamp: startTimeStamp,
 		EndTimeStamp:   endTimeStamp,
 		Duration:       duration,
 		CreatedAt:      time.Now(),
-	}
+	}, nil
 
 }
 

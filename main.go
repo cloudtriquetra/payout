@@ -32,7 +32,11 @@ func main() {
 		endTimeStamp,
 	)
 
-	var effortEntry = utils.NewEffortEntry(empName, startTimeStamp, endTimeStamp, duration)
+	effortEntry, err := utils.NewEffortEntry(empName, startTimeStamp, endTimeStamp, duration)
+	if err != nil {
+		fmt.Println("Error with Effort Entry")
+		panic(err)
+	}
 
 	effortEntry.RecordEffortToFile("a.csv")
 }
