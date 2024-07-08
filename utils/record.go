@@ -17,7 +17,17 @@ type EffortEntry struct {
 	CreatedBy      string
 }
 
+func NewEffortEntry(empName string, startTimeStamp time.Time, endTimeStamp time.Time, duration time.Duration) EffortEntry {
+	return EffortEntry{
+		EmployeeName:   empName,
+		StartTimeStamp: startTimeStamp,
+		EndTimeStamp:   endTimeStamp,
+		Duration:       duration,
+		CreatedAt:      time.Now(),
+	}
+
+}
+
 func (effort EffortEntry) RecordEffortToFile(recordFile string) {
-	fmt.Println(effort.EmployeeName, effort.StartTimeStamp)
 	os.WriteFile(recordFile, []byte(fmt.Sprintf("%v", effort)), 0644)
 }

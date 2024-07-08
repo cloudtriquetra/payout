@@ -32,14 +32,7 @@ func main() {
 		endTimeStamp,
 	)
 
-	var effortEntry utils.EffortEntry
-	effortEntry = utils.EffortEntry{
-		EmployeeName:   empName,
-		StartTimeStamp: startTimeStamp,
-		EndTimeStamp:   endTimeStamp,
-		Duration:       duration,
-		CreatedAt:      time.Now(),
-	}
-	//fmt.Sprintln(empName, startTimeStamp.String(), endTimeStamp.String(), duration)
+	var effortEntry = utils.NewEffortEntry(empName, startTimeStamp, endTimeStamp, duration)
+
 	effortEntry.RecordEffortToFile("a.csv")
 }
