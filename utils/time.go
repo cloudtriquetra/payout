@@ -2,14 +2,15 @@ package utils
 
 import (
 	"errors"
+	"math"
 	"strings"
 	"time"
 )
 
-func GetDuration(startDateTime time.Time, endDateTime time.Time) time.Duration {
+func GetDuration(startDateTime time.Time, endDateTime time.Time) float64 {
 
 	duration := endDateTime.Sub(startDateTime)
-	return duration
+	return math.Ceil(duration.Hours()*100) / 100
 
 }
 

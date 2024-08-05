@@ -2,41 +2,33 @@ package main
 
 import (
 	"fmt"
-	"time"
 
+	"github.com/cloudtriquetra/payout/db"
+	"github.com/cloudtriquetra/payout/jobs"
 	"github.com/cloudtriquetra/payout/utils"
 )
 
 func main() {
-	var empName string = utils.GetUserInput("Enter Employee Name:")
-	var startDate, startTime string = utils.GetUserInput("Enter Start Date (DD-MM-YYYY):"),
-		utils.GetUserInput("Enter Start Time (HH:MM):")
+	db.InitDB()
+	choice := utils.GetSingleUserInput(`Enter Job/Expense Type:
+	1. Hotel Shift
+	2. Pet Sitting
+	3. Cat Visit
+	4. Overnight Hotel Shift
+	5. Overnight Pet Sitting
+	6. Cat at Sitter Home
+	7. Dog at Sitter Home
+	8. Uber / Expense
+Your Choice: `)
 
-	startTimeStamp, err := utils.GetTimeStamp(startDate, startTime)
-	if err != nil {
-		fmt.Println("Error with Start Date/Time: ")
-		panic(err)
+	switch choice {
+	case "1":
+
+		jobs.PostEffortInputHotel()
+		//fmt.Println(db.ReadEffortData())
+
+	case "2":
+		effort := jobs.PostEffortInputPetSitting()
+		fmt.Println(utils.Struct2Map(effort))
 	}
-
-	var endDate, endTime string = utils.GetUserInput("Enter End Date (DD-MM-YYYY):"),
-		utils.GetUserInput("Enter End Time (HH:MM): ")
-
-	endTimeStamp, err := utils.GetTimeStamp(endDate, endTime)
-	if err != nil {
-		fmt.Println("Error with End Date/Time: ")
-		panic(err)
-	}
-
-	var duration time.Duration = utils.GetDuration(
-		startTimeStamp,
-		endTimeStamp,
-	)
-
-	effortEntry, err := utils.NewEffortEntry(empName, startTimeStamp, endTimeStamp, duration)
-	if err != nil {
-		fmt.Println("Error with Effort Entry")
-		panic(err)
-	}
-
-	effortEntry.RecordEffortToFile("a.csv")
 }
