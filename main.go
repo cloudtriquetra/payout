@@ -31,5 +31,8 @@ Your Choice: `)
 
 	case "4":
 		jobs.PostEffortInputOvernightHotel()
+
+	case "5":
+		jobs.PostEffortInputOvernightPetSitting()
 	}
 }

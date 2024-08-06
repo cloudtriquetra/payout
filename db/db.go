@@ -48,11 +48,11 @@ func createTables() {
     employee_name           varchar(40) NOT NULL,
     effort_type             varchar(40) NOT NULL,
     effort_date             date NOT NULL,
-    start_time              varchar(40),
-    end_time                varchar(40),
-    effort_description      text,
-    pet_name                varchar(40),
-    duration                numeric(10,2),
+    start_time              varchar(40) default NA,
+    end_time                varchar(40) default NA,
+    effort_description      text default NA,
+    pet_name                varchar(40)default NA,
+    duration                numeric(10,2) default NA,
     cost                    numeric(10,2) NOT NULL
 	);`
 
