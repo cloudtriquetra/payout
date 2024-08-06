@@ -2,7 +2,6 @@ package jobs
 
 import (
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/cloudtriquetra/payout/db"
@@ -24,7 +23,7 @@ type EffortEntryPetSitting struct {
 }
 
 func NewEffortInputForPetSitting(empName string, startTimeStamp time.Time, endTimeStamp time.Time, duration float64, description string, effortDate string, petName string) (*EffortEntryPetSitting, error) {
-
+	// New Effort Entry for Pet Sitting
 	return &EffortEntryPetSitting{
 		EmployeeName:   empName,
 		StartTimeStamp: startTimeStamp,
@@ -40,10 +39,17 @@ func NewEffortInputForPetSitting(empName string, startTimeStamp time.Time, endTi
 }
 
 func PostEffortInputPetSitting() EffortEntryPetSitting {
-	empName, err := employee.GetEmployeeName()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(0)
+	// Post Effort Entry for Pet Sitting
+	var empName string
+	var err error
+
+	for {
+		empName, err = employee.GetEmployeeName()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		break
 	}
 	var startDate, startTime string = utils.GetSingleUserInput("Enter Date for Pet Sitting (DD-MM-YYYY):"),
 		utils.GetSingleUserInput("Enter Start Time for Pet Sitting (HH:MM):")
@@ -112,5 +118,6 @@ func (e EffortEntryPetSitting) Save() {
 		panic(err)
 	}
 	result.LastInsertId()
+	fmt.Println("Effort Entry for Pet Sitting has been saved successfully")
 
 }

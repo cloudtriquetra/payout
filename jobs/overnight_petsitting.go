@@ -2,7 +2,6 @@ package jobs
 
 import (
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/cloudtriquetra/payout/db"
@@ -33,10 +32,16 @@ func NewEffortInputForOvernightPetSitting(empName string, effortDate string, des
 }
 
 func PostEffortInputOvernightPetSitting() EffortEntryOvernightPetSitting {
-	empName, err := employee.GetEmployeeName()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(0)
+	var empName string
+	var err error
+
+	for {
+		empName, err = employee.GetEmployeeName()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		break
 	}
 
 	var effortDate string = utils.GetSingleUserInput("Enter Start Date for Overnight Petsitting (DD-MM-YYYY):")
@@ -86,5 +91,6 @@ func (e EffortEntryOvernightPetSitting) Save() {
 		panic(err)
 	}
 	result.LastInsertId()
+	fmt.Println("Effort Entry for Overnight Pet Sitting has been saved successfully")
 
 }

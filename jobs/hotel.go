@@ -40,11 +40,18 @@ func NewEffortInputForHotel(empName string, startTimeStamp time.Time, endTimeSta
 }
 
 func PostEffortInputHotel() EffortEntryHotel {
-	empName, err := employee.GetEmployeeName()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(0)
+	var empName string
+	var err error
+
+	for {
+		empName, err = employee.GetEmployeeName()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		break
 	}
+
 	var startDate, startTime string = utils.GetSingleUserInput("Enter Date for Hotel/Day Care Shift (DD-MM-YYYY):"),
 		utils.GetSingleUserInput("Enter Start Time for Hotel/Day Care Shift (HH:MM):")
 
@@ -105,5 +112,6 @@ func (e EffortEntryHotel) Save() {
 		panic(err)
 	}
 	result.LastInsertId()
+	fmt.Println("Effort Entry for Hotel/Day Care Shift has been saved successfully")
 
 }

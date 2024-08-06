@@ -2,7 +2,6 @@ package jobs
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"time"
 
@@ -30,10 +29,16 @@ func NewExpense(empName string, expenseDate string, amount float64, description 
 }
 
 func PostExpense() Expense {
-	empName, err := employee.GetEmployeeName()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(0)
+	var empName string
+	var err error
+
+	for {
+		empName, err = employee.GetEmployeeName()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		break
 	}
 
 	var expenseDate string = utils.GetSingleUserInput("Enter Expense Date (DD-MM-YYYY):")
@@ -81,4 +86,5 @@ func (e *Expense) Save() {
 		panic(err)
 	}
 	result.LastInsertId()
+	fmt.Println("Expense Entry Saved Successfully")
 }

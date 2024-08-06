@@ -103,7 +103,7 @@ func createTables() {
 	homecare_description    text,
 	homecare_amount         numeric(10,2),
 	homecare_pet_name       text NOT NULL,
-	homecare_pet_type       text NOT NULL ALLOWED VALUES ('Dog', 'Cat')
+	homecare_pet_type       text NOT NULL check(homecare_pet_type = "dog" or homecare_pet_type = "cat")
 	);`
 
 	_, err := DBeffort.Exec(effortsqlStmt)

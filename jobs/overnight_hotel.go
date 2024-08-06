@@ -2,7 +2,6 @@ package jobs
 
 import (
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/cloudtriquetra/payout/db"
@@ -31,10 +30,16 @@ func NewEffortInputForOvernightHotel(empName string, effortDate string, descript
 }
 
 func PostEffortInputOvernightHotel() EffortEntryOvernightHotel {
-	empName, err := employee.GetEmployeeName()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(0)
+	var empName string
+	var err error
+
+	for {
+		empName, err = employee.GetEmployeeName()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		break
 	}
 
 	var effortDate string = utils.GetSingleUserInput("Enter Start Date for Overnight Hotel Shift (DD-MM-YYYY):")
@@ -78,5 +83,6 @@ func (e EffortEntryOvernightHotel) Save() {
 		panic(err)
 	}
 	result.LastInsertId()
+	fmt.Println("Effort Entry for Overnight Hotel Shift has been saved successfully")
 
 }
