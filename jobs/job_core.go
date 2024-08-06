@@ -4,7 +4,7 @@ var jobRates = map[string]float64{
 	"hotel_shift":           25.0,
 	"pet_sitting":           17.0,
 	"cat_visit":             25.0,
-	"overnight_hotel_shift": 80.0,
+	"overnight_hotel":       80.0,
 	"overnight_pet_sitting": 120.0,
 	"cat_at_sitter_home":    25.0,
 	"dog_at_sitter_home":    75.0,

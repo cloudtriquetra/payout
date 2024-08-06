@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/cloudtriquetra/payout/db"
 	"github.com/cloudtriquetra/payout/jobs"
 	"github.com/cloudtriquetra/payout/utils"
@@ -23,12 +21,15 @@ Your Choice: `)
 
 	switch choice {
 	case "1":
-
 		jobs.PostEffortInputHotel()
-		//fmt.Println(db.ReadEffortData())
 
 	case "2":
-		effort := jobs.PostEffortInputPetSitting()
-		fmt.Println(utils.Struct2Map(effort))
+		jobs.PostEffortInputPetSitting()
+
+	case "3":
+		jobs.PostEffortInputCatVisit()
+
+	case "4":
+		jobs.PostEffortInputOvernightHotel()
 	}
 }
