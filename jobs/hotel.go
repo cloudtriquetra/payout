@@ -71,6 +71,9 @@ func PostEffortInputHotel() EffortEntryHotel {
 	effortDate := startDate
 
 	var description string = utils.GetMultiUserInput("Enter Additional Note / Description for Hotel/Day Care Shift (OPTIONAL): ")
+	if description == "" {
+		description = "NA"
+	}
 
 	effortEntry, err := NewEffortInputForHotel(empName, startTimeStamp, endTimeStamp, duration, effortDate, description)
 	if err != nil {

@@ -77,6 +77,9 @@ func PostEffortInputPetSitting() EffortEntryPetSitting {
 	effortDate := startDate
 
 	var description string = utils.GetMultiUserInput("Enter Additional Note / Description for Pet Sitting (OPTIONAL): ")
+	if description == "" {
+		description = "NA"
+	}
 
 	effortEntry, err := NewEffortInputForPetSitting(empName, startTimeStamp, endTimeStamp, duration, description, effortDate, petName)
 	if err != nil {

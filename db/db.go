@@ -52,7 +52,7 @@ func createTables() {
     end_time                varchar(40) default NA,
     effort_description      text default NA,
     pet_name                varchar(40)default NA,
-    duration                numeric(10,2) default NA,
+    duration                numeric(10,2),
     cost                    numeric(10,2) NOT NULL
 	);`
 

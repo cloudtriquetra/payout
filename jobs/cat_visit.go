@@ -54,6 +54,9 @@ func PostEffortInputCatVisit() EffortEntryCatVisit {
 	}
 
 	var description string = utils.GetMultiUserInput("Enter Additional Note / Description for Cat Visit (OPTIONAL): ")
+	if description == "" {
+		description = "NA"
+	}
 
 	effortEntry, err := NewEffortInputForCatVisit(empName, effortDate, description, petName)
 	if err != nil {
