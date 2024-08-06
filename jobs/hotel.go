@@ -11,30 +11,24 @@ import (
 )
 
 type EffortEntryHotel struct {
-	EffortID       int
-	EmployeeName   string
-	EffortDate     string
+	Effort
 	StartTimeStamp time.Time
 	EndTimeStamp   time.Time
 	DurationInHour float64
-	Description    string
-	EffortType     string
-	EffortRate     float64
-	Amount         float64
 }
 
-func NewEffortInputForHotel(empName string, startTimeStamp time.Time, endTimeStamp time.Time, duration float64, effortDate string, description string) (*EffortEntryHotel, error) {
+func newEffortInputForHotel(empName string, startTimeStamp time.Time, endTimeStamp time.Time, duration float64, effortDate string, description string) (*EffortEntryHotel, error) {
 
 	return &EffortEntryHotel{
-		EmployeeName:   empName,
+		Effort: Effort{
+			EmployeeName: empName,
+			Description:  description,
+			EffortDate:   effortDate,
+			EffortType:   "Hotel / Day Care",
+			Amount:       jobRates["hotel_shift"] * duration},
 		StartTimeStamp: startTimeStamp,
 		EndTimeStamp:   endTimeStamp,
 		DurationInHour: duration,
-		Description:    description,
-		EffortDate:     effortDate,
-		EffortType:     "Hotel / Day Care",
-		EffortRate:     jobRates["hotel_shift"],
-		Amount:         jobRates["hotel_shift"] * duration,
 	}, nil
 
 }
@@ -82,17 +76,17 @@ func PostEffortInputHotel() EffortEntryHotel {
 		description = "NA"
 	}
 
-	effortEntry, err := NewEffortInputForHotel(empName, startTimeStamp, endTimeStamp, duration, effortDate, description)
+	effortEntry, err := newEffortInputForHotel(empName, startTimeStamp, endTimeStamp, duration, effortDate, description)
 	if err != nil {
 		fmt.Println("Error with Effort Entry")
 		panic(err)
 	}
-	effortEntry.Save()
+	effortEntry.save()
 	return *effortEntry
 
 }
 
-func (e EffortEntryHotel) Save() {
+func (e EffortEntryHotel) save() {
 	// Save EffortEntryHotel to DB
 	query := `
 	INSERT INTO efforts (employee_name, effort_type, effort_date, start_time, end_time, effort_description, duration, cost) 

@@ -10,30 +10,25 @@ import (
 )
 
 type EffortEntryPetSitting struct {
-	EmployeeName   string
-	EffortDate     string
+	Effort
 	StartTimeStamp time.Time
 	EndTimeStamp   time.Time
 	DurationInHour float64
-	Description    string
-	EffortType     string
-	EffortRate     float64
-	Amount         float64
 	PetName        string
 }
 
-func NewEffortInputForPetSitting(empName string, startTimeStamp time.Time, endTimeStamp time.Time, duration float64, description string, effortDate string, petName string) (*EffortEntryPetSitting, error) {
+func newEffortInputForPetSitting(empName string, startTimeStamp time.Time, endTimeStamp time.Time, duration float64, description string, effortDate string, petName string) (*EffortEntryPetSitting, error) {
 	// New Effort Entry for Pet Sitting
 	return &EffortEntryPetSitting{
-		EmployeeName:   empName,
+		Effort: Effort{
+			EmployeeName: empName,
+			Description:  description,
+			EffortDate:   effortDate,
+			EffortType:   "Pet Sitting",
+			Amount:       jobRates["pet_sitting"] * duration},
 		StartTimeStamp: startTimeStamp,
 		EndTimeStamp:   endTimeStamp,
 		DurationInHour: duration,
-		Description:    description,
-		EffortDate:     effortDate,
-		EffortType:     "Pet Sitting",
-		EffortRate:     jobRates["pet_sitting"],
-		Amount:         jobRates["pet_sitting"] * duration,
 		PetName:        petName,
 	}, nil
 }
@@ -87,18 +82,18 @@ func PostEffortInputPetSitting() EffortEntryPetSitting {
 		description = "NA"
 	}
 
-	effortEntry, err := NewEffortInputForPetSitting(empName, startTimeStamp, endTimeStamp, duration, description, effortDate, petName)
+	effortEntry, err := newEffortInputForPetSitting(empName, startTimeStamp, endTimeStamp, duration, description, effortDate, petName)
 	if err != nil {
 		fmt.Println("Error with Effort Entry")
 		panic(err)
 	}
 
-	effortEntry.Save()
+	effortEntry.save()
 	return *effortEntry
 
 }
 
-func (e EffortEntryPetSitting) Save() {
+func (e EffortEntryPetSitting) save() {
 	// Save EffortEntryPetSitting to DB
 	query := `
 	INSERT INTO efforts (employee_name, effort_type, effort_date, start_time, end_time, effort_description, duration, cost, pet_name) 

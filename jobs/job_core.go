@@ -24,3 +24,11 @@ func GetSupportedJobTypes() []string {
 
 	return supportedJobTypes
 }
+
+type Effort struct {
+	EmployeeName string
+	EffortDate   string
+	Description  string
+	EffortType   string
+	Amount       float64
+}

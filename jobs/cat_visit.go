@@ -11,23 +11,20 @@ import (
 
 // EffortEntryCatVisit is a struct that holds the details of a Cat Visit job.
 type EffortEntryCatVisit struct {
-	EmployeeName string
-	EffortDate   string
-	Description  string
-	EffortType   string
-	Amount       float64
-	PetName      string
+	Effort
+	PetName string
 }
 
-func NewEffortInputForCatVisit(empName string, effortDate string, description string, petName string) (*EffortEntryCatVisit, error) {
+func newEffortInputForCatVisit(empName string, effortDate string, description string, petName string) (*EffortEntryCatVisit, error) {
 
 	return &EffortEntryCatVisit{
-		EmployeeName: empName,
-		Description:  description,
-		EffortDate:   effortDate,
-		EffortType:   "Cat Visit",
-		PetName:      petName,
-		Amount:       jobRates["cat_visit"],
+		Effort: Effort{
+			EmployeeName: empName,
+			Description:  description,
+			EffortDate:   effortDate,
+			EffortType:   "Cat Visit",
+			Amount:       jobRates["cat_visit"]},
+		PetName: petName,
 	}, nil
 
 }
@@ -63,17 +60,17 @@ func PostEffortInputCatVisit() EffortEntryCatVisit {
 		description = "NA"
 	}
 
-	effortEntry, err := NewEffortInputForCatVisit(empName, effortDate, description, petName)
+	effortEntry, err := newEffortInputForCatVisit(empName, effortDate, description, petName)
 	if err != nil {
 		fmt.Println("Error with Effort Entry")
 		panic(err)
 	}
 
-	effortEntry.Save()
+	effortEntry.save()
 	return *effortEntry
 }
 
-func (e EffortEntryCatVisit) Save() {
+func (e EffortEntryCatVisit) save() {
 	query := `
 	INSERT INTO efforts (employee_name, effort_type, effort_date, effort_description, cost, pet_name) 
 	VALUES (?, ?, ?, ?, ?, ?);`

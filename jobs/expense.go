@@ -17,7 +17,7 @@ type Expense struct {
 	Description  string
 }
 
-func NewExpense(empName string, expenseDate string, amount float64, description string) (*Expense, error) {
+func newExpense(empName string, expenseDate string, amount float64, description string) (*Expense, error) {
 
 	return &Expense{
 		EmployeeName: empName,
@@ -62,17 +62,17 @@ func PostExpense() Expense {
 		panic("Expense Description is required")
 	}
 
-	expense, err := NewExpense(empName, expenseDate, amount, description)
+	expense, err := newExpense(empName, expenseDate, amount, description)
 	if err != nil {
 		fmt.Println("Error with Expense Entry")
 		panic(err)
 	}
 
-	expense.Save()
+	expense.save()
 	return *expense
 }
 
-func (e *Expense) Save() {
+func (e *Expense) save() {
 	query := `INSERT INTO expenses (employee_name, expense_date, expense_amount, expense_description) VALUES (?, ?, ?, ?)`
 	stmt, err := db.DBexpense.Prepare(query)
 	if err != nil {

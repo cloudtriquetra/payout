@@ -10,23 +10,20 @@ import (
 )
 
 type EffortEntryOvernightPetSitting struct {
-	EmployeeName string
-	EffortDate   string
-	Description  string
-	EffortType   string
-	Amount       float64
-	PetName      string
+	Effort
+	PetName string
 }
 
-func NewEffortInputForOvernightPetSitting(empName string, effortDate string, description string, petName string) (*EffortEntryOvernightPetSitting, error) {
+func newEffortInputForOvernightPetSitting(empName string, effortDate string, description string, petName string) (*EffortEntryOvernightPetSitting, error) {
 
 	return &EffortEntryOvernightPetSitting{
-		EmployeeName: empName,
-		Description:  description,
-		EffortDate:   effortDate,
-		EffortType:   "Overnight Pet Sitting",
-		PetName:      petName,
-		Amount:       jobRates["overnight_petsitting"],
+		Effort: Effort{
+			EmployeeName: empName,
+			Description:  description,
+			EffortDate:   effortDate,
+			EffortType:   "Overnight Pet Sitting",
+			Amount:       jobRates["overnight_petsitting"]},
+		PetName: petName,
 	}, nil
 
 }
@@ -62,17 +59,17 @@ func PostEffortInputOvernightPetSitting() EffortEntryOvernightPetSitting {
 		description = "NA"
 	}
 
-	effortEntry, err := NewEffortInputForOvernightPetSitting(empName, effortDate, description, petName)
+	effortEntry, err := newEffortInputForOvernightPetSitting(empName, effortDate, description, petName)
 	if err != nil {
 		fmt.Println("Error with Effort Entry")
 		panic(err)
 	}
 
-	effortEntry.Save()
+	effortEntry.save()
 	return *effortEntry
 }
 
-func (e EffortEntryOvernightPetSitting) Save() {
+func (e EffortEntryOvernightPetSitting) save() {
 	query := `
 	INSERT INTO efforts (employee_name, effort_type, effort_date, effort_description, cost, pet_name) 
 	VALUES (?, ?, ?, ?, ?, ?);`

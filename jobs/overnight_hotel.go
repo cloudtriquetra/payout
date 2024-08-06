@@ -10,21 +10,18 @@ import (
 )
 
 type EffortEntryOvernightHotel struct {
-	EmployeeName string
-	EffortDate   string
-	Description  string
-	EffortType   string
-	Amount       float64
+	Effort
 }
 
-func NewEffortInputForOvernightHotel(empName string, effortDate string, description string) (*EffortEntryOvernightHotel, error) {
+func newEffortInputForOvernightHotel(empName string, effortDate string, description string) (*EffortEntryOvernightHotel, error) {
 
 	return &EffortEntryOvernightHotel{
-		EmployeeName: empName,
-		Description:  description,
-		EffortDate:   effortDate,
-		EffortType:   "Overnight Hotel",
-		Amount:       jobRates["overnight_hotel"],
+		Effort: Effort{
+			EmployeeName: empName,
+			Description:  description,
+			EffortDate:   effortDate,
+			EffortType:   "Overnight Hotel",
+			Amount:       jobRates["overnight_hotel"]},
 	}, nil
 
 }
@@ -54,17 +51,17 @@ func PostEffortInputOvernightHotel() EffortEntryOvernightHotel {
 		description = "NA"
 	}
 
-	effortEntry, err := NewEffortInputForOvernightHotel(empName, effortDate, description)
+	effortEntry, err := newEffortInputForOvernightHotel(empName, effortDate, description)
 	if err != nil {
 		fmt.Println("Error with Effort Entry")
 		panic(err)
 	}
 
-	effortEntry.Save()
+	effortEntry.save()
 	return *effortEntry
 }
 
-func (e EffortEntryOvernightHotel) Save() {
+func (e EffortEntryOvernightHotel) save() {
 	query := `
 	INSERT INTO efforts (employee_name, effort_type, effort_date, effort_description, cost) 
 	VALUES (?, ?, ?, ?, ?);`
