@@ -46,17 +46,17 @@ type HomeCare struct {
 func InitDB() {
 	var err error
 	const errMsg = "Error opening database: "
-	DBeffort, err = sql.Open("sqlite3", "data/effort.db")
+	DBeffort, err = sql.Open("sqlite3", "effort.db")
 	if err != nil {
 		panic(errMsg + err.Error())
 	}
 
-	DBexpense, err = sql.Open("sqlite3", "data/expense.db")
+	DBexpense, err = sql.Open("sqlite3", "expense.db")
 	if err != nil {
 		panic(errMsg + err.Error())
 	}
 
-	DBhomecare, err = sql.Open("sqlite3", "data/homecare.db")
+	DBhomecare, err = sql.Open("sqlite3", "homecare.db")
 	if err != nil {
 		panic(errMsg + err.Error())
 	}
