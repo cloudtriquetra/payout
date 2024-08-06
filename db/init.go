@@ -8,6 +8,7 @@ import (
 
 var DBeffort *sql.DB
 var DBexpense *sql.DB
+var DBhomecare *sql.DB
 
 type Effort struct {
 	EffortID       int
@@ -22,22 +23,50 @@ type Effort struct {
 	PetName        sql.NullString
 }
 
+type Expense struct {
+	ExpenseID          int
+	EmployeeName       string
+	ExpenseDate        string
+	ExpenseDescription string
+	ExpenseAmount      float64
+}
+
+type HomeCare struct {
+	HomeCareID          int
+	EmployeeName        string
+	HomeCareStartTime   string
+	HomeCareEndTime     string
+	HomeCareDuration    float64
+	HomeCareDescription string
+	HomeCareAmount      float64
+	HomeCarePetName     string
+	HomeCarePetType     string
+}
+
 func InitDB() {
 	var err error
+	const errMsg = "Error opening database: "
 	DBeffort, err = sql.Open("sqlite3", "data/effort.db")
 	if err != nil {
-		panic("Error opening database: " + err.Error())
+		panic(errMsg + err.Error())
 	}
 
 	DBexpense, err = sql.Open("sqlite3", "data/expense.db")
 	if err != nil {
-		panic("Error opening database: " + err.Error())
+		panic(errMsg + err.Error())
+	}
+
+	DBhomecare, err = sql.Open("sqlite3", "data/homecare.db")
+	if err != nil {
+		panic(errMsg + err.Error())
 	}
 
 	DBeffort.SetMaxOpenConns(10)
 	DBeffort.SetMaxIdleConns(5)
 	DBexpense.SetMaxOpenConns(10)
 	DBexpense.SetMaxIdleConns(5)
+	DBhomecare.SetMaxOpenConns(10)
+	DBhomecare.SetMaxIdleConns(5)
 	createTables()
 }
 
@@ -65,12 +94,29 @@ func createTables() {
 	expense_amount          numeric(10,2) NOT NULL
 	);`
 
+	homecaresqlStmt := `CREATE TABLE IF NOT EXISTS homecare (
+	homecare_id             INTEGER PRIMARY KEY AUTOINCREMENT,
+	employee_name           text NOT NULL,
+	homecare_start_time     date NOT NULL,
+	homecare_end_time	    date NOT NULL,
+	homecare_duration       numeric(10,2) NOT NULL,
+	homecare_description    text,
+	homecare_amount         numeric(10,2),
+	homecare_pet_name       text NOT NULL,
+	homecare_pet_type       text NOT NULL ALLOWED VALUES ('Dog', 'Cat')
+	);`
+
 	_, err := DBeffort.Exec(effortsqlStmt)
 	if err != nil {
 		panic("Effort DB Creation Failed" + err.Error())
 	}
 
 	_, err = DBexpense.Exec(expensesqlStmt)
+	if err != nil {
+		panic("Expense DB Creation Failed" + err.Error())
+	}
+
+	_, err = DBhomecare.Exec(homecaresqlStmt)
 	if err != nil {
 		panic("Expense DB Creation Failed" + err.Error())
 	}

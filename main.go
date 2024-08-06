@@ -14,8 +14,8 @@ func main() {
 	3. Cat Visit
 	4. Overnight Hotel Shift
 	5. Overnight Pet Sitting
-	6. Cat at Sitter Home
-	7. Dog at Sitter Home
+	6. Cat at Sitter's Home
+	7. Dog at Sitter's Home
 	8. Uber / Expense
 Your Choice: `)
 
@@ -34,5 +34,8 @@ Your Choice: `)
 
 	case "5":
 		jobs.PostEffortInputOvernightPetSitting()
+
+	case "8":
+		jobs.PostExpense()
 	}
 }
